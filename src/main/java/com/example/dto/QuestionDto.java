@@ -4,6 +4,7 @@ import com.example.model.User;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Author by admin, Email xx@xx.com, Date on 2019/8/6.
@@ -11,7 +12,7 @@ import java.util.Date;
  */
 @Data
 public class QuestionDto {
-    private Long id;
+    private Integer id;
 
     private String title;
 
@@ -20,7 +21,7 @@ public class QuestionDto {
 
     private Long gmtModified;
 
-    private Long creator;
+    private Integer creator;
 
     private Integer commentCount;
 
@@ -28,5 +29,6 @@ public class QuestionDto {
 
     private Integer likeCount;
     private String tag;
-    private User user;
+    private List <User>   users;
+    private  User user;
 }

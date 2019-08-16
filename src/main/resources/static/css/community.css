@@ -88,8 +88,9 @@ body {
 
 .comments {
     padding-bottom: 5px;
-    margin-bottom: 15px;
     border-bottom: 1px solid #eee;
+    margin: 0px 15px;
+
 }
 
 .sub-comments {

@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 public class Question {
 
-        private Long id;
+        private Integer id;
 
         private String title;
 
