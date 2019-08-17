@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface QuestionMapper {
 
-    @Insert("insert into  QUESTION (TITLE,DESCRIPTION,GMT_CREATE,CREATOR,TAG)  values( #{title},#{description},#{gmtCreate},#{id},#{tag})")
+    @Insert("insert into  QUESTION (TITLE,DESCRIPTION,GMT_CREATE,CREATOR,TAG)  values( #{title},#{description},#{gmtCreate},#{creator},#{tag})")
      void creat(Question questiong);
 
     @Select("select * from question  order by   GMT_CREATE  desc  limit #{ nowrow}  ,#{size}  ")

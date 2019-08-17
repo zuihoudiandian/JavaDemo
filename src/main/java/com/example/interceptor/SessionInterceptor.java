@@ -3,6 +3,7 @@ package com.example.interceptor;
 import com.example.mapper.UserMapper;
 import com.example.model.User;
 import com.example.model.UserExample;
+import com.example.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,8 @@ public class SessionInterceptor implements HandlerInterceptor {
 
 //    @Value("${github.redirect.uri}")
 //    private String redirectUri;
-
+    @Autowired
+    private NotificationService notificationService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie[] cookies = request.getCookies();
@@ -41,6 +43,9 @@ public class SessionInterceptor implements HandlerInterceptor {
                     //User user = userMapper.findByToken(token);
                     if (users.size()>0){
                         request.getSession().setAttribute("user",users.get(0));
+                        Long unreadCount = notificationService.unreadCount(users.get(0).getId().longValue());
+                        request.getSession().setAttribute("unreadCount",unreadCount);
+
                     }
                     break;
                 }
