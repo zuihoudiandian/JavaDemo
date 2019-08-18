@@ -1,6 +1,6 @@
 create table COMMENT
 (
-  ID            BIGINT default (NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_0345B060_36DD_4C25_BF7D_7C80B7FEAD33) auto_increment
+  ID            BIGINT  auto_increment
     primary key,
   PARENT_ID     BIGINT  not null,
   TYPE          INTEGER not null,
@@ -14,7 +14,7 @@ create table COMMENT
 
 create table NOTIFICATION
 (
-  ID            BIGINT  default (NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_5EE99B27_12F8_41BC_BF06_075EFAF67131) auto_increment
+  ID            BIGINT   auto_increment
     primary key,
   NOTIFIER      BIGINT            not null,
   RECEIVER      BIGINT            not null,
@@ -28,7 +28,7 @@ create table NOTIFICATION
 
 create table QUESTION
 (
-  ID            INTEGER default (NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_C7C11CC8_F18A_4911_BE43_E95825265E84) auto_increment
+  ID            INTEGER  auto_increment
     primary key,
   TITLE         VARCHAR(50),
   DESCRIPTION   CLOB,
@@ -43,7 +43,7 @@ create table QUESTION
 
 create table USER
 (
-  ID           INTEGER default (NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_E1FBC179_5702_4494_8219_6251DE8F8789) auto_increment,
+  ID           INTEGER  auto_increment,
   ACCOUNT_ID   VARCHAR(100),
   NAME         VARCHAR(50),
   TOKEN        CHAR(36),
