@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.dto.PaginationDTO;
 import com.example.dto.QuestionDto;
+import com.example.dto.QuestionQueryDTO;
 import com.example.exception.CustomizeErrorCode;
 import com.example.exception.CustomizeException;
 import com.example.mapper.QuestionMapper;
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,9 +29,22 @@ public class Questionservice {
     private QuestionMapper questionMapper;
     @Autowired
     private UserMapper userMapper;
-    public PaginationDTO Allselect(Integer page, Integer size) {
-    PaginationDTO PaginationDTO = new PaginationDTO();
-        Integer totalCount = questionMapper.count();
+    public PaginationDTO Allselect(String search,Integer page, Integer size) {
+        if (StringUtils.isNotBlank(search)) {
+            String[] tags = StringUtils.split(search, " ");
+            search = Arrays
+                    .stream(tags)
+                    .filter(StringUtils::isNotBlank)
+                    .map(t -> t.replace("+", "").replace("*", ""))
+                    .filter(StringUtils::isNotBlank)
+                    .collect(Collectors.joining("|"));
+        }
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setSearch(search);
+
+        PaginationDTO PaginationDTO = new PaginationDTO();
+        Integer totalCount=questionMapper.countbysearch(search);
+        // Integer totalCount = questionMapper.count();
         Integer totalPage;
 
         if (totalCount % size == 0) {
@@ -46,7 +61,8 @@ public class Questionservice {
         }
         Integer nowrow= size*(page-1);
         PaginationDTO.setPagination(totalPage,page);
-        List<Question> allselect  = questionMapper.Allselect(nowrow,size);
+        //List<Question> allselect  = questionMapper.Allselect(nowrow,size);
+            List<Question> allselect  = questionMapper.AllselectBysearch(questionQueryDTO.getSearch(),nowrow,size);
            List<QuestionDto> questionDtoslist = new ArrayList<>();
         for (Question question : allselect) {
              User user  = userMapper.listfiandByAccountID(question.getCreator());

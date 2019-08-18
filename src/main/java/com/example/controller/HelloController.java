@@ -17,10 +17,13 @@ public class HelloController {
     @GetMapping("/")
     public String index(  Model model,
                         @RequestParam(name = "page" ,defaultValue = "1")   Integer page  ,
-                        @RequestParam(name = "size",defaultValue ="5" ) Integer size)  {
+                        @RequestParam(name = "size",defaultValue ="5" ) Integer size,
+                        @RequestParam(name = "search", required = false) String search)
 
-        PaginationDTO pagination = questionservice.Allselect(page ,size);
+    {
 
+        PaginationDTO pagination = questionservice.Allselect(search,page ,size);
+        model.addAttribute("search", search);
         model.addAttribute("pagination",pagination);
         return "index";
     }

@@ -38,5 +38,24 @@ public interface QuestionMapper {
     List<Question> selectRelated(Question question);
 
 
+    @Select("<script>"+
+            "select count(*) from QUESTION\n" +
+            "        <where>\n" +
+            "            <if test=\"search != null and search != ''\">\n" +
+            "                and title regexp #{search}\n" +
+            "            </if>\n" +
+            "        </where>"+
+            "</script>")
+    Integer countbysearch(@Param(value = "search") String search);
 
+    @Select("<script> " +
+            "  select * from QUESTION\n" +
+            "        <where>\n" +
+            "            <if test=\"search != null and search != ''\">\n" +
+            "                and title regexp #{search}\n" +
+            "            </if>\n" +
+            "        </where>\n" +
+            "        order by gmt_create desc limit #{nowrow},#{size}"+
+            " </script>"  )
+    List<Question> AllselectBysearch(@Param(value = "search") String search, @Param(value = "nowrow")  Integer nowrow,@Param(value = "size") Integer size);
 }
