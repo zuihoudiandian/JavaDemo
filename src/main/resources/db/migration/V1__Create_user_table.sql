@@ -11,7 +11,6 @@ create table COMMENT
   CONTENT       VARCHAR(1024),
   COMMENT_COUNT INTEGER
 );
-
 create table NOTIFICATION
 (
   ID            BIGINT   auto_increment

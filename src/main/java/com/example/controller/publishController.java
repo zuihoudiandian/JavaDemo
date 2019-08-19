@@ -24,7 +24,6 @@ import java.util.Date;
  * PS: Not easy to write code, please indicate.
  */
 @Controller
-
 public class publishController {
     @Autowired
     private UserMapper userMapper;
@@ -35,7 +34,7 @@ public class publishController {
     {
 
         model.addAttribute("tags", TagCache.get());
-        return "/publish";
+        return "publish";
     }
 
     @GetMapping("/publish/{id}")
@@ -46,7 +45,7 @@ public class publishController {
         model.addAttribute("description",question.getDescription());
         model.addAttribute("tag",question.getTag());
         model.addAttribute("tags", TagCache.get());
-        return "/publish";
+        return "publish";
     }
 
     @PostMapping("/publish")
