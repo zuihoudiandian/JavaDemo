@@ -26,6 +26,7 @@ ResultDTO<T> {
         return errorOf(errorCode.getCode(), errorCode.getMessage());
     }
 
+
     public static ResultDTO errorOf(CustomizeException e) {
         return errorOf(e.getCode(), e.getMessage());
     }

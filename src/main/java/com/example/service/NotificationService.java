@@ -94,7 +94,6 @@ public class NotificationService {
             throw new CustomizeException(CustomizeErrorCode.NOTIFICATION_NOT_FOUND);
         }
         if (!Objects.equals(notification.getReceiver(), user.getId().longValue())) {
-            System.out.println(user.getId()+"++++++++++++++++");
             throw new CustomizeException(CustomizeErrorCode.READ_NOTIFICATION_FAIL);
         }
 

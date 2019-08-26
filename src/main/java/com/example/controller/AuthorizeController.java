@@ -61,7 +61,6 @@ public class AuthorizeController {
                 user.setBio(githubUser.getBio());
                 userService.createOrUpdate(user);
                 response.addCookie(new Cookie("token",token));
-
 //                request.getSession().setAttribute("user", githubUser);
                 return "redirect:/";
             }  else{

@@ -141,3 +141,47 @@ body {
     text-align: center;
     color: #666;;
 }
+
+/****修改密码的模态框*****/
+#myModal1 .modal-header{
+    padding:10px;
+}
+#myModal1 .modal-header .modal-title{
+    font-size: 16px;
+    text-align: left;
+}
+#myModal1 .modal-body{
+    overflow:hidden;
+}
+#myModal1 .modal-body label{
+    margin:0;
+    line-height:34px;
+}
+#myModal1 .modal-body .form-group{
+    overflow:hidden;
+}
+#myModal1 .modal-body .form-control{
+    margin-left:-30px;
+}
+
+/*登陆*/
+#myModal2 .modal-header{
+    padding:10px;
+}
+#myModal2 .modal-header .modal-title{
+    font-size: 16px;
+    text-align: left;
+}
+#myModal1 .modal-body{
+    overflow:hidden;
+}
+#myModal2 .modal-body label{
+    margin:0;
+    line-height:34px;
+}
+#myModal2 .modal-body .form-group{
+    overflow:hidden;
+}
+#myModal2 .modal-body .form-control{
+    margin-left:-30px;
+}

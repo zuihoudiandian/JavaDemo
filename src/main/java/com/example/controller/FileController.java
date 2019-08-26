@@ -28,7 +28,6 @@ public class FileController {
     private  String tmpLocation;
     @RequestMapping("/file/upload")
     @ResponseBody
-
     public FileDTO upload(HttpServletRequest request) {
         String fileName = "";
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -51,7 +50,7 @@ public class FileController {
                     destFile.mkdirs();
                     haveCreatePath = true;
                 }
-                String fileUrl="/upload/"+fileName;
+                String fileUrl="/uploadImg/"+fileName;
                 System.out.println(fileUrl+"地址");
                multipartFile.transferTo(new File(destPath+fileName));
                 FileDTO fileDTO = new FileDTO();
@@ -60,7 +59,7 @@ public class FileController {
                 return fileDTO;
             } catch (Exception e) {
                 e.printStackTrace();
-                log.error("upload error", e);
+                log.error("uploadImg error", e);
                 FileDTO fileDTO = new FileDTO();
                 fileDTO.setSuccess(0);
                 fileDTO.setMessage("上传失败");

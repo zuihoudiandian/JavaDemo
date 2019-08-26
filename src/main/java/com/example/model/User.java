@@ -16,6 +16,9 @@ public class User {
     private Long gmtModified;
     private  String bio;
     private  String avatarUrl;
+    private  String passWord;
+    private  String email;
+    private  String type;
 
 
 }

@@ -1,5 +1,5 @@
 /*!
- * Image (upload) dialog plugin for Editor.md
+ * Image (uploadImg) dialog plugin for Editor.md
  *
  * @file        image-dialog.js
  * @author      pandao

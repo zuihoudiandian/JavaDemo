@@ -63,7 +63,8 @@
                         <div class="media-left">
                             <a href="#">
                                 <img class="media-object img-rounded"
-                                     th:src="${comment.user.avatarUrl}">
+                                     th:src="${comment.user.avatarUrl !=null ? comment.user.avatarUrl :'/images/user.png'}">
+
                             </a>
                         </div>
                         <div class="media-body" th:id="${'comment-body-'+comment.id}">
@@ -133,7 +134,7 @@
                     <div class="media-left">
                         <a href="#">
                             <img class="media-object img-rounded"
-                                 th:src="${question.user.avatarUrl}">
+                                 th:src="${question.user.avatarUrl !=null ? question.user.avatarUrl : '/images/user.png'}">
                         </a>
                     </div>
                     <div class="media-body">

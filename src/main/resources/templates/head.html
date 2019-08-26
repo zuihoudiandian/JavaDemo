@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
-
-
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/bootstrap-validator/0.5.3/css/bootstrapValidator.css"/>
+<link rel="stylesheet" href="/css/community.css">
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script  src="https://cdn.staticfile.org/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
 <body>
-
 <div th:fragment="nav">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -46,10 +49,24 @@
                         </ul>
                     </li>
                     <li th:if="${session.user != null}">
-                        <img  style="margin: 10px" class="media-object img-rounded" th:src="${session.user.getName() != null ? session.user.avatarUrl : '/images/user.png'}">
+                        <img  style="margin: 10px" class="media-object img-rounded" th:src="${session.user.avatarUrl != null ? session.user.avatarUrl : '/images/user.png'}">
                     </li>
                     <li th:if="${session.user == null}">
-                        <a th:href="@{https://github.com/login/oauth/authorize(client_id='ffa2b92dc0c79ab1fb1f',redirect_uri=${#httpServletRequest.getServletContext().getAttribute('redirectUri')},scope='user',state=1)}">登录</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            <span>登陆</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li >
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal1">注册</a>
+                            </li>
+                            <li >
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal2">登陆</a>
+                            </li>
+                            <li><a th:href="@{https://github.com/login/oauth/authorize(client_id='ffa2b92dc0c79ab1fb1f',redirect_uri=${#httpServletRequest.getServletContext().getAttribute('redirectUri')},scope='user',state=1)}">Github登录</a></li>
+                        </ul>
+                        <!--<a th:href="@{https://github.com/login/oauth/authorize(client_id='ffa2b92dc0c79ab1fb1f',redirect_uri=${#httpServletRequest.getServletContext().getAttribute('redirectUri')},scope='user',state=1)}">登录</a>-->
                     </li>
                 </ul>
             </div>
