@@ -64,7 +64,6 @@
                             <a href="#">
                                 <img class="media-object img-rounded"
                                      th:src="${comment.user.avatarUrl !=null ? comment.user.avatarUrl :'/images/user.png'}">
-
                             </a>
                         </div>
                         <div class="media-body" th:id="${'comment-body-'+comment.id}">
@@ -114,7 +113,7 @@
                         </div>
                         <div class="media-body">
                             <h5 class="media-heading">
-                                <span th:text="${session.user != null ? session.user.name : '匿名用户'}"></span>
+                                    <span th:text="${session.user != null ? session.user.name : '匿名用户'}"></span>
                             </h5>
                         </div>
                     </div>

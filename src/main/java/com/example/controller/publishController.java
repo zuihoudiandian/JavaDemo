@@ -7,6 +7,7 @@ import com.example.mapper.QuestionMapper;
 import com.example.mapper.UserMapper;
 import com.example.model.Question;
 import com.example.model.User;
+import com.example.utils.TimeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -94,8 +95,9 @@ public class publishController {
                 question.setDescription(description);
                 question.setTag(tag);
                 question.setCreator(user.getId());
-                question.setId(id);
-                question.setGmtCreate(new Date());
+                //question.setId(id.longValue());
+                Date date = TimeUtils.formatNow("yyyy-MM-dd HH:mm:ss");
+                question.setGmtCreate(date);
                 question.setLikeCount(0);
                 question.setCommentCount(0);
                 question.setViewCount(0);
@@ -107,7 +109,7 @@ public class publishController {
                 question.setTitle(title);
                 question.setDescription(description);
                 question.setTag(tag);
-                question.setId(id);
+                question.setId(id.longValue());
             int i = questionMapper.updateQuestion(question);
            if(i!=1){
                throw  new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);

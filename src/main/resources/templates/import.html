@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="">
 <head th:fragment="head">
+
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/community.css">
@@ -11,11 +12,36 @@
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
     <script  src="https://cdn.staticfile.org/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
+    <script src="/js/L2Dwidget.min.1.js" type="application/javascript"></script>
+    <script>
+        L2Dwidget.init({
+            model: {
+                jsonPath:
+                    "/Epsilon2.1.model.json",
+                scale: 1
+            },
+            display: {
+                position: "right",
+                width: 150,
+                height: 310,
+                hOffset: 0,
+                vOffset: -20
+            },
+            mobile: {
+                show: true,
+                scale: 0.5
+            },
+            react: {
+                opacityDefault: 1,
+                opacityOnHover: 0.2
+            }
+        })
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="google-site-verification" content="QGf2OqDw91EjWtNE07HoLJi0x0G2rIYylk6jn6JEoEQ" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-89103576-8"></script>
+
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}

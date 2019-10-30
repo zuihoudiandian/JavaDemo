@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 public class Questionservice {
     @Autowired
     private QuestionMapper questionMapper;
+
+
     @Autowired
     private UserMapper userMapper;
     public PaginationDTO Allselect(String search,Integer page, Integer size) {
@@ -65,7 +67,8 @@ public class Questionservice {
             List<Question> allselect  = questionMapper.AllselectBysearch(questionQueryDTO.getSearch(),nowrow,size);
            List<QuestionDto> questionDtoslist = new ArrayList<>();
         for (Question question : allselect) {
-             User user  = userMapper.listfiandByAccountID(question.getCreator());
+           // User user  = userMapper.listfiandByAccountID(question.getCreator());
+            User user = userMapper.selectById(question.getCreator());
             QuestionDto questionDto = new QuestionDto();
             //将question中的属性拷贝到questionDta中
             BeanUtils.copyProperties(question,questionDto);
@@ -73,11 +76,10 @@ public class Questionservice {
             questionDtoslist.add(questionDto);
         }
         PaginationDTO.setData(questionDtoslist);
-
         return PaginationDTO;
 
     }
-    public PaginationDTO list( User user, Integer page, Integer size) {
+    public PaginationDTO list(User user, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalPage;
 
@@ -146,7 +148,7 @@ public class Questionservice {
                 .filter(StringUtils::isNotBlank)
                 .collect(Collectors.joining("|"));
         Question question = new Question();
-        question.setId(questionDto.getId());
+        question.setId(questionDto.getId().longValue());
         question.setTag(regexpTag);
 
         List<Question> questions = questionMapper.selectRelated(question);
@@ -157,4 +159,18 @@ public class Questionservice {
         }).collect(Collectors.toList());
         return questionDTOS;
     }
+
+    public List<QuestionDto>  selectquestionByView() {
+        List<Question> questions = questionMapper.selectquestionByView();
+        List<QuestionDto> hotquestionDto = new ArrayList<>();
+        for (Question question : questions) {
+            QuestionDto questionDto = new QuestionDto();
+            //将question中的属性拷贝到questionDta中
+            BeanUtils.copyProperties(question,questionDto);
+            hotquestionDto.add(questionDto);
+        }
+        return hotquestionDto;
+    }
+
+
 }

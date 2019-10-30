@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Data
 public class QuestionDto {
-    private Integer id;
+    private Long id;
 
     private String title;
 

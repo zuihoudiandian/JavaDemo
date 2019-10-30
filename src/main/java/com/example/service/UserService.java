@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.mapper.UserMapper;
 import com.example.model.User;
 import com.example.model.UserExample;
+import com.example.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +25,16 @@ public class UserService {
         example.createCriteria().andAccountIdEqualTo(user.getAccountId());
         List<User> users = userMapper.selectByExample(example);
         if (users.size() == 0) {
+
             // 插入
-            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtCreate(TimeUtils.formatNow("yyyy-MM-dd HH:mm:ss"));
             user.setGmtModified(user.getGmtCreate());
             userMapper.insert(user);
         } else {
             //更新
             User dbUser = users.get(0);
             User updateUser = new User();
-            updateUser.setGmtModified(System.currentTimeMillis());
+            updateUser.setGmtModified(TimeUtils.formatNow("yyyy-MM-dd HH:mm:ss"));
             updateUser.setAvatarUrl(user.getAvatarUrl());
             updateUser.setName(user.getName());
             updateUser.setToken(user.getToken());

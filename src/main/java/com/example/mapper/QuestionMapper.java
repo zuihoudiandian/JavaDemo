@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 @Mapper
-public interface QuestionMapper {
+public interface QuestionMapper  {
 
     @Insert("insert into  QUESTION (TITLE,DESCRIPTION,GMT_CREATE,CREATOR,TAG)  values( #{title},#{description},#{gmtCreate},#{creator},#{tag})")
      void creat(Question questiong);
@@ -19,7 +19,7 @@ public interface QuestionMapper {
 
 
     @Select("select * from question  where   CREATOR = #{id}  order by GMT_CREATE  desc  limit #{nowrow}  ,#{size}   ")
-    List<Question> myquestion(@Param(value = "id") Integer id, @Param(value = "nowrow")  Integer offset,@Param(value = "size") Integer size);
+    List<Question> myquestion(@Param(value = "id") Long id, @Param(value = "nowrow")  Integer offset,@Param(value = "size") Integer size);
 
     @Select("select * from question  where id = #{id}")
     Question getquetionByid(@Param(value = "id") Integer id);
@@ -54,8 +54,11 @@ public interface QuestionMapper {
             "            <if test=\"search != null and search != ''\">\n" +
             "                and title regexp #{search}\n" +
             "            </if>\n" +
-            "        </where>\n" +
+            "        </where>"+
             "        order by gmt_create desc limit #{nowrow},#{size}"+
             " </script>"  )
     List<Question> AllselectBysearch(@Param(value = "search") String search, @Param(value = "nowrow")  Integer nowrow,@Param(value = "size") Integer size);
+
+    @Select("SELECT * FROM question ORDER BY VIEW_COUNT DESC  LIMIT 6")
+    List<Question> selectquestionByView();
 }

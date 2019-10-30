@@ -43,7 +43,7 @@ public class SessionInterceptor implements HandlerInterceptor {
                     //User user = userMapper.findByToken(token);
                     if (users.size()>0){
                         request.getSession().setAttribute("user",users.get(0));
-                        Long unreadCount = notificationService.unreadCount(users.get(0).getId().longValue());
+                        Long unreadCount = notificationService.unreadCount(users.get(0).getId());
                         request.getSession().setAttribute("unreadCount",unreadCount);
 
                     }

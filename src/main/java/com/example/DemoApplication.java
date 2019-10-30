@@ -26,5 +26,4 @@ public class DemoApplication {
         return tomcat;
     }
 
-
 }

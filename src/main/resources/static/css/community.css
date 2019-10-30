@@ -1,5 +1,7 @@
 body {
     background-color: #efefef;
+    margin: 0;
+    padding: 0;
 }
 
 .main {
@@ -137,10 +139,18 @@ body {
     color: #499ef3;
 }
 
+
 .footer {
+    width: 100%;
+    height: 80px;
+    line-height: 80px;
     text-align: center;
+    /* 方法一 */
+    position: fixed;
+    bottom: 0;
     color: #666;;
 }
+
 
 /****修改密码的模态框*****/
 #myModal1 .modal-header{

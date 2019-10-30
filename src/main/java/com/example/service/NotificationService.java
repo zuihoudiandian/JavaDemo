@@ -28,7 +28,7 @@ public class NotificationService {
     @Autowired
     private NotificationMapper notificationMapper;
 
-    public PaginationDTO list(Integer userId, Integer page, Integer size) {
+    public PaginationDTO list(Long userId, Integer page, Integer size) {
 
         PaginationDTO<NotificationDTO> paginationDTO = new PaginationDTO<>();
 
@@ -36,7 +36,7 @@ public class NotificationService {
 
         NotificationExample notificationExample = new NotificationExample();
         notificationExample.createCriteria()
-                .andReceiverEqualTo(userId.longValue());
+                .andReceiverEqualTo(userId);
         Integer totalCount = (int) notificationMapper.countByExample(notificationExample);
 
         if (totalCount % size == 0) {
@@ -58,7 +58,7 @@ public class NotificationService {
         Integer offset = size * (page - 1);
         NotificationExample example = new NotificationExample();
         example.createCriteria()
-                .andReceiverEqualTo(userId.longValue());
+                .andReceiverEqualTo(userId);
         example.setOrderByClause("gmt_create desc");
 
         List<Notification> notifications = notificationMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, size));
@@ -93,7 +93,7 @@ public class NotificationService {
         if (notification == null) {
             throw new CustomizeException(CustomizeErrorCode.NOTIFICATION_NOT_FOUND);
         }
-        if (!Objects.equals(notification.getReceiver(), user.getId().longValue())) {
+        if (!Objects.equals(notification.getReceiver(), user.getId())) {
             throw new CustomizeException(CustomizeErrorCode.READ_NOTIFICATION_FAIL);
         }
 

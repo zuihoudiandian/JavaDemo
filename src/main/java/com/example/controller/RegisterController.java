@@ -2,6 +2,8 @@ package com.example.controller;
 
 import com.example.model.User;
 import com.example.service.UserService;
+import com.example.utils.CodecUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +35,9 @@ import java.util.UUID;
         User user = new User();
         user.setAccountId(username);
         user.setEmail(email);
-        user.setPassWord(password);
+        //密码加密
+        String encodePassword = CodecUtils.passwordBcryptEncode(username.trim(),password.trim());
+        user.setPassword(encodePassword);
         String token = UUID.randomUUID().toString();
         user.setToken(token);
         user.setType(Registertype);
@@ -46,9 +50,10 @@ import java.util.UUID;
     @ResponseBody
     public Object checkeusername(@RequestBody String username)
     {
-        String[] split = username.split("=");
-        username=split[1];
-        Object checkUsername = userService.checkUsername(username);
+        String s = StringUtils.substringAfterLast(username, "=");
+//        String[] split = username.split("=");
+//        username=split[1];
+        Object checkUsername = userService.checkUsername(s);
         return checkUsername;
     }
 }
