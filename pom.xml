@@ -20,9 +20,9 @@
         <profile>
             <id>dev</id>
             <properties>
-                <db.url>jdbc:h2:~/springbootdemo</db.url>
-                <db.user>sa</db.user>
-                <db.password>123</db.password>
+                <db.url>jdbc:mysql://localhost:3306/community?serverTimezone=Asia/Shanghai</db.url>
+                <db.user>root</db.user>
+                <db.password>123456</db.password>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -68,17 +68,17 @@
             <version>1.2.58</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.199</version>
-            <scope>test</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.h2database</groupId>-->
+            <!--<artifactId>h2</artifactId>-->
+            <!--<version>1.4.199</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
         <!--mybatis驱动-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.17</version>
+            <version>5.1.46</version>
         </dependency>
         <!-- mybatis整合spring -->
         <!--<dependency>-->
@@ -116,11 +116,11 @@
         </dependency>
         <!--分页插件依赖-->
         <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
-            <version>5.1.2</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.github.pagehelper</groupId>-->
+            <!--<artifactId>pagehelper</artifactId>-->
+            <!--<version>5.1.2</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
@@ -179,9 +179,9 @@
                 </configuration>
                 <dependencies>
                     <dependency>
-                        <groupId>com.h2database</groupId>
-                        <artifactId>h2</artifactId>
-                        <version>1.4.199</version>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>5.1.46</version>
                     </dependency>
                 </dependencies>
             </plugin>
