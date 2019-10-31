@@ -20,10 +20,7 @@ import java.util.UUID;
 @Controller
 @Slf4j
 public class FileController {
-
-
     private Boolean haveCreatePath = false;
-
     @Value("${custom.tmpLocation}")
     private  String tmpLocation;
     @RequestMapping("/file/upload")

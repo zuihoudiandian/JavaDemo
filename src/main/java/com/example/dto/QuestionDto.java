@@ -21,7 +21,7 @@ public class QuestionDto {
 
     private Long gmtModified;
 
-    private Integer creator;
+    private Long creator;
 
     private Integer commentCount;
 

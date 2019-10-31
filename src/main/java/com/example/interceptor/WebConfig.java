@@ -13,7 +13,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
-//@EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
     @Value("${custom.tmpLocation}")
     private  String tmpLocation;
