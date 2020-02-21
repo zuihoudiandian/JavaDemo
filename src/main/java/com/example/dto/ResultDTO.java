@@ -8,9 +8,7 @@ import lombok.Data;
  * Created by codedrinker on 2019/5/31.
  */
 @Data
-public class
-
-ResultDTO<T> {
+public class ResultDTO<T> {
     private Integer code;
     private String message;
     private T data;
@@ -31,10 +29,10 @@ ResultDTO<T> {
         return errorOf(e.getCode(), e.getMessage());
     }
 
-    public static ResultDTO okOf() {
+    public static ResultDTO okOf(String message) {
         ResultDTO resultDTO = new ResultDTO();
         resultDTO.setCode(200);
-        resultDTO.setMessage("请求成功");
+        resultDTO.setMessage(message);
         return resultDTO;
     }
 

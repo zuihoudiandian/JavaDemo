@@ -19,7 +19,7 @@ public class Question {
         private String description;
         private Date gmtCreate;
 
-        private Long gmtModified;
+        private Date gmtModified;
 
         private Long creator;
 

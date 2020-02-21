@@ -1,6 +1,8 @@
 package com.example.dto;
 
+import com.example.model.PaginationModel;
 import com.example.model.User;
+import com.example.model.UserInfo;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,7 +13,7 @@ import java.util.List;
  * PS: Not easy to write code, please indicate.
  */
 @Data
-public class QuestionDto {
+public class QuestionDto extends PaginationModel {
     private Long id;
 
     private String title;
@@ -31,4 +33,6 @@ public class QuestionDto {
     private String tag;
     private List <User>   users;
     private  User user;
+    private List<UserInfo> userInfos;
+    private UserInfo userInfo;
 }

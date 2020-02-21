@@ -9,16 +9,15 @@
 <script  src="https://cdn.staticfile.org/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
 <body>
 <div th:fragment="nav">
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default" style="margin-bottom:4px" >
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                         data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">英雄社区</span>
+                    <span class="sr-only">Q&A</span>
                 </button>
-                <a class="navbar-brand" href="/">英雄社区</a>
+                <a class="navbar-brand" href="/">Q&A</a>
             </div>
-
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <form class="navbar-form navbar-left" action="/" method="get">
                     <div class="form-group">
@@ -26,30 +25,27 @@
                     </div>
                     <button type="submit" class="btn btn-default">搜索</button>
                 </form>
-                <!--<ul class="nav navbar-nav">-->
-                    <!--<li><a href="https://detail.youzan.com/show/goods/newest?alias=2xj0uxwujrwg6" target="_blank"-->
-                           <!--onclick="gtag('event', 'click', {'event_category': 'LINK','event_label': 'BOOK_STORE','transport_type': 'NAV'})">英雄书店</a>-->
-                    <!--</li>-->
-                <!--</ul>-->
                 <ul class="nav navbar-nav navbar-right">
                     <li th:if="${session.user != null}">
                         <a href="/publish">提问</a>
                     </li>
                     <li ><a href="/profile/replies">通知 <span class="badge" th:text="${session.unreadCount}"></span></a>
                     </li>
-                    <li class="dropdown" th:if="${session.user != null}">
+                    <li class="dropdown"  th:if="${session.user != null}">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">
-                            <span th:text="${session.user.getName()}"></span>
+                            <span th:text="${session.userInfo.accountId}" ></span>
                             <span class="caret"></span>
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" style="text-align: left; min-width: 50px;">
                             <li><a href="/profile/questions">我的问题</a></li>
+                            <li><a href="/userInfo/queryInfo">个人资料</a></li>
                             <li><a href="/logout">退出登录</a></li>
                         </ul>
                     </li>
+
                     <li th:if="${session.user != null}">
-                        <img  style="margin: 10px" class="media-object img-rounded" th:src="${session.user.avatarUrl != null ? session.user.avatarUrl : '/images/user.png'}">
+                        <img  th:src="${session.userInfo.avatarUrl!=null?session.userInfo.avatarUrl:'/images/gua.jpg'}" class="login_img">
                     </li>
                     <li th:if="${session.user == null}">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -57,7 +53,7 @@
                             <span>登陆</span>
                             <span class="caret"></span>
                         </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" style="text-align: left; min-width: 50px;">
                             <li >
                                 <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal1">注册</a>
                             </li>
@@ -66,14 +62,12 @@
                             </li>
                             <li><a th:href="@{https://github.com/login/oauth/authorize(client_id='ffa2b92dc0c79ab1fb1f',redirect_uri=${#httpServletRequest.getServletContext().getAttribute('redirectUri')},scope='user',state=1)}">Github登录</a></li>
                         </ul>
-                        <!--<a th:href="@{https://github.com/login/oauth/authorize(client_id='ffa2b92dc0c79ab1fb1f',redirect_uri=${#httpServletRequest.getServletContext().getAttribute('redirectUri')},scope='user',state=1)}">登录</a>-->
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+    <div th:insert="~{register :: register}"></div>
 </div>
-
 </body>
-
 </html>

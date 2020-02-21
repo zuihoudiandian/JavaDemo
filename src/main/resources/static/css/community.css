@@ -6,7 +6,7 @@ body {
 
 .main {
     background-color: white;
-    margin: 30px;
+    width: 1000px;
 }
 
 .side {
@@ -23,9 +23,11 @@ body {
     height: 38px;
 }
 
+/*
 .media-body {
     padding-top: 10px;
 }
+*/
 
 .text-desc {
     font-size: 12px;
@@ -142,15 +144,100 @@ body {
 
 .footer {
     width: 100%;
-    height: 80px;
-    line-height: 80px;
+    margin: 10px;
+    line-height: 88px;
     text-align: center;
-    /* 方法一 */
-    position: fixed;
+    height: 100px;
     bottom: 0;
-    color: #666;;
+    left:0;
+    background-color: #efefef;
 }
 
+.user_info{
+    float: left;
+    text-align: center;
+    width: 110px;
+    height: 110px;
+}
+
+.user_info .modify {
+    font-size: 14px;
+    color: #3399ea;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.right_c {
+    float: left;
+    width: 820px;
+}
+.user_title{
+    font-size: 20px;
+    color: #3d3d3d;
+    height: 90px;
+    line-height: 90px;
+    border-bottom: 1px solid #e0e0e0;
+}
+.id_card{
+    height: 130px;
+    line-height: 20px;
+}
+.id_card .user_home {
+    float: right;
+    font-size: 14px;
+    color: #3399ea;
+    padding-right: 9.3px;
+    margin-top: 3px;
+}
+
+.mod {
+    float: right;
+    font-size: 14px;
+    color: #3399ea;
+    cursor: pointer;
+    padding-right: 9.3px;
+}
+.line {
+    height: 1px;
+    background: #e0e0e0;
+    margin: 10px;
+}
+.right_c .nick {
+    height: 32px;
+    line-height: 32px;
+    font-size: 14px;
+}
+.main_info{
+    background-color: white;
+    width: 1000px;
+    height: 450px;
+}
+.sex_select{
+    font-weight: 400;
+    width: 15%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    }
+.msg {
+    font-size: 14px;
+    color: red;
+    margin-left: 10px;
+}
+
+.login_img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 10px;
+}
 
 /****修改密码的模态框*****/
 #myModal1 .modal-header{

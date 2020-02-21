@@ -4,7 +4,6 @@ package com.example.exception;
  * Created by codedrinker on 2019/5/28.
  */
 public enum CustomizeErrorCode implements ICustomizeErrorCode {
-
     QUESTION_NOT_FOUND(2001, "你找到问题不在了，要不要换个试试？"),
     TARGET_PARAM_NOT_FOUND(2002, "未选中任何问题或评论进行回复"),
     NO_LOGIN(2003, "当前操作需要登录，请登陆后重试"),
@@ -18,6 +17,8 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     FILE_UPLOAD_FAIL(2010, "图片上传失败"),
     INVALID_INPUT(2011, "非法输入"),
     INVALID_OPERATION(2012, "兄弟，是不是走错房间了？"),
+    UPDATE_ERROR(2013,"更新个人资料失败"),
+    FILEUPLOAD_REEOR(2014,"头像上传失败")
     ;
 
     @Override

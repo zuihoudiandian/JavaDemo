@@ -1,14 +1,18 @@
 package com.example.service;
 
-import com.example.dto.PaginationDTO;
-import com.example.dto.QuestionDto;
-import com.example.dto.QuestionQueryDTO;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.dto.*;
 import com.example.exception.CustomizeErrorCode;
 import com.example.exception.CustomizeException;
 import com.example.mapper.QuestionMapper;
+import com.example.mapper.UserInfoMapper;
 import com.example.mapper.UserMapper;
 import com.example.model.Question;
 import com.example.model.User;
+import com.example.model.UserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +28,15 @@ import java.util.stream.Collectors;
  * PS: Not easy to write code, please indicate.
  */
 @Service
-public class Questionservice {
+public class Questionservice extends ServiceImpl<QuestionMapper, Question> {
     @Autowired
     private QuestionMapper questionMapper;
-
-
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserInfoMapper userInfoMapper;
+
+
     public PaginationDTO Allselect(String search,Integer page, Integer size) {
         if (StringUtils.isNotBlank(search)) {
             String[] tags = StringUtils.split(search, " ");
@@ -46,9 +52,10 @@ public class Questionservice {
 
         PaginationDTO PaginationDTO = new PaginationDTO();
         Integer totalCount=questionMapper.countbysearch(search);
-        // Integer totalCount = questionMapper.count();
+        if (totalCount==0){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         Integer totalPage;
-
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
         } else {
@@ -62,23 +69,29 @@ public class Questionservice {
             page = totalPage;
         }
         Integer nowrow= size*(page-1);
-        PaginationDTO.setPagination(totalPage,page);
-        //List<Question> allselect  = questionMapper.Allselect(nowrow,size);
+            PaginationDTO.setPagination(totalPage,page);
             List<Question> allselect  = questionMapper.AllselectBysearch(questionQueryDTO.getSearch(),nowrow,size);
-           List<QuestionDto> questionDtoslist = new ArrayList<>();
-        for (Question question : allselect) {
-           // User user  = userMapper.listfiandByAccountID(question.getCreator());
-            User user = userMapper.selectById(question.getCreator());
-            QuestionDto questionDto = new QuestionDto();
-            //将question中的属性拷贝到questionDta中
-            BeanUtils.copyProperties(question,questionDto);
-            questionDto.setUser(user);
-            questionDtoslist.add(questionDto);
+            List<QuestionDto> questionDtoslist = new ArrayList<>();
+            if (allselect.size()>0){
+                for (Question question : allselect) {
+                    User user = userMapper.selectById(question.getCreator());
+                    if (user!=null){
+                        QueryWrapper<UserInfo> Wrapper = new QueryWrapper<>();
+                        Wrapper.eq(StringUtils.isNotEmpty(user.getAccountId()),"ACCOUNT_ID",user.getAccountId());
+                        UserInfo userInfo = userInfoMapper.selectOne(Wrapper);
+                        QuestionDto questionDto = new QuestionDto();
+                        //将question中的属性拷贝到questionDta中
+                        BeanUtils.copyProperties(question,questionDto);
+                        questionDto.setUser(user);
+                        questionDto.setUserInfo(userInfo);
+                        questionDtoslist.add(questionDto);
+                    }
+                }
+            }
+            PaginationDTO.setData(questionDtoslist);
+         return PaginationDTO;
         }
-        PaginationDTO.setData(questionDtoslist);
-        return PaginationDTO;
 
-    }
     public PaginationDTO list(User user, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalPage;
@@ -105,7 +118,9 @@ public class Questionservice {
         List<Question> allselect  = questionMapper.myquestion(user.getId(), offset,size);
         List<QuestionDto> questionDtoslist = new ArrayList<>();
         for (Question question : allselect) {
-            User users  = userMapper.listfiandByAccountID(question.getCreator());
+            QueryWrapper<User> wrapper = new QueryWrapper<>();
+            wrapper.eq("ID",question.getCreator());
+            User users  =   userMapper.selectOne(wrapper);
             QuestionDto questionDto = new QuestionDto();
             //将question中的属性拷贝到questionDta中
             BeanUtils.copyProperties(question,questionDto);
@@ -125,7 +140,13 @@ public class Questionservice {
         }
         QuestionDto questionDto = new QuestionDto();
         BeanUtils.copyProperties(question,questionDto);
-        User user = userMapper.findUserByAccountID(question.getCreator());
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("ID",question.getCreator());
+        User user  =   userMapper.selectOne(wrapper);
+        QueryWrapper<UserInfo> infoQueryWrapper = new QueryWrapper<>();
+        infoQueryWrapper.eq("ACCOUNT_ID",user.getAccountId());
+        UserInfo userInfo = userInfoMapper.selectOne(infoQueryWrapper);
+        questionDto.setUserInfo(userInfo);
         questionDto.setUser(user);
         return questionDto;
 
@@ -173,4 +194,19 @@ public class Questionservice {
     }
 
 
+
+
+    public boolean delquestionByuser(User user) {
+        QueryWrapper<Question> questionQueryWrapper = new QueryWrapper<>();
+        questionQueryWrapper.eq("CREATOR",user.getId());
+        return lambdaUpdate().eq(Question::getCreator, user.getId()).remove();
+    }
+
+    public IPage<Question> getQuestionList(QuestionByuser questionByuser) {
+        Page<Question> page = new Page<>(questionByuser.getPageNumber(), questionByuser.getPageSize());
+        QueryWrapper<Question> wrapper = new QueryWrapper<>();
+        wrapper.eq("CREATOR",questionByuser.getId());
+        IPage<Question> iPage = questionMapper.selectPage(page, wrapper);
+        return iPage;
+    }
 }

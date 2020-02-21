@@ -8,15 +8,20 @@
 function post() {
     var questionId = $("#question_id").val();
     var content = $("#comment_content").val();
-    comment2target(questionId, 1, content);
+    var userType =$("#userType").text();
+    if (userType=="游客用户"){
+        toastr.error("请登录，回复！！！");
+    }
+    else {
+        comment2target(questionId, 1, content);
+    }
 }
 
 function comment2target(targetId, type, content) {
     if (!content) {
-        alert("不能回复空内容~~~");
+        toastr.error("不能回复空内容~~~");
         return;
     }
-
     $.ajax({
         type: "POST",
         url: "/comment",
@@ -135,6 +140,7 @@ function selectTag(e) {
 
 $(function () {
     $('#register').bootstrapValidator({
+        live:"disabled",
         message: 'This value is not valid',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -149,7 +155,7 @@ $(function () {
                         message: '用户名不能为空'
                     },
                     stringLength: {
-                        min: 6,
+                        min: 5,
                         max: 18,
                         message: '用户名长度必须在6到18位之间'
                     },
@@ -169,43 +175,80 @@ $(function () {
                         },
                         delay: 500
                     }
-                },
-                password1: {
-                    message: '密码无效',
+                }
+            },
+            code:{
+                validators:{
+                    remote: { // ajax校验，获得一个json数据（{'valid': true or false}）
+                        url: '/checkVerify',       //验证地址
+                        message: '验证码错误',   //提示信息
+                        type: 'POST',          //请求方式
+                        dataType: "json",
+                        data: {
+                            code: function () {
+                                return $("#code").val();
+                            }
+                        },
+                        delay: 500
+                    }
+                }
+            },
+            password:{
+                validators: {
+                    notEmpty: {
+                        message: '密码不能为空'
+                    },
+                    stringLength: {  //长度限制
+                        min: 6,
+                        message: '用户名长度必须大于6位'
+                    },
+                }
+            },
+            password1:{
                     validators: {
                         notEmpty: {
                             message: '密码不能为空'
                         },
-                        stringLength: {
+                        stringLength: {  //长度限制
                             min: 6,
-                            max: 30,
-                            message: '密码长度必须在6到30之间'
-                        },
-                        different: {  //比较
-                            field: 'username', //需要进行比较的input name值
-                            message: '密码不能与用户名相同'
+                            message: '用户名长度必须大于6位'
                         },
                         identical: {  //比较是否相同
                             field: 'password',  //需要进行比较的input name值
                             message: '两次密码不一致'
-                        }
-                    }
-                },
-
-                email: {
-                    validators: {
-                        notEmpty: {
-                            message: '邮箱不能为空'
                         },
-                        emailAddress: {
-                            message: '邮箱地址格式有误'
-                        }
                     }
-                }
-            }
-        }
+            },
+        },
     });
 });
+
+$('#x').click(function() {
+    $('#register').data('bootstrapValidator').resetForm(true);
+});
+
+function registerbtn(){
+    $("#register").data('bootstrapValidator').validate();//相当于触发一次所有的验证
+    if($("#register").data('bootstrapValidator').isValid()){//判断验证是否已经通过
+        var form=$("#register");
+        $.ajax({
+            type: "post",
+            url: "/register",
+            data: form.serialize(),
+            dataType: 'json',
+            success: function (response) {
+                if (response.code==200) {
+                    $('#myModal1').modal('hide');
+                    toastr.success(response.message);
+                    /*注册成功之后的跳转*/
+                    location.href = '/';
+                } else {
+                    toastr.error(response.message);}
+            }
+        });
+    }
+}
+
 
 $(function () {
     $('#login').bootstrapValidator({
@@ -246,13 +289,12 @@ $(function () {
                     },
                     stringLength: {
                         min: 6,
-                        max: 18,
-                        message: '密码在6-18个字符内'
+                        message: '密码不能少于6位'
                     },
-                    regexp: {
+                   /* regexp: {
                         regexp: /^[a-zA-Z0-9_\.]+$/,
                         message: '含有非法字符'
-                    },
+                    },*/
                     callback: {
                         message: '密码不正确'
                     }
@@ -271,31 +313,22 @@ $(function () {
             data: form.serialize(),
             dataType: 'json',
             success: function (response) {
-                console.log(response)
-                if (response.success) {
+                if (response.code==200) {
+                    $('#myModal2').modal('hide');
+                    toastr.success(response.message);
                     /*登录成功之后的跳转*/
-                    location.href = '/';
+                   location.href = '/';
                 } else {
-                    // 登录失败
-//              	登录按钮点击后,默认不允许再次点击;登录失败要恢复登录按钮的点击
-//					form.data('bootstrapValidator').disableSubmitButtons(false);
-                    form.bootstrapValidator('disableSubmitButtons', false);
-//					指定触发某一个表单元素的的错误提示函数
-                    if (response.error == 1000) { // 后台接口如果返回error=1000表示name错误
-//						form.data('bootstrapValidator').updateStatus('username', 'INVALID', 'fun'); // 不能触发
-// 						可以触发
-                        form.data('bootstrapValidator').updateStatus('username', 'INVALID', 'callback');
-//						form.data('bootstrapValidator').updateStatus('username', 'INVALID').validateField('username');
-//						form.data('bootstrapValidator').updateStatus('username', 'INVALID', 'notEmpty');
-                    } else if (response.error == 1001) { // 后台接口如果返回error=1001表示密码错误
-                        form.data('bootstrapValidator').updateStatus('password', 'INVALID', 'callback');
-                    }
+                    toastr.error(response.message);}
                 }
-            }
-        });
-    });
-//	重置功能
-    $(".pull-left[type='reset']").on('click', function () {
-        $('#login').data('bootstrapValidator').resetForm();
+            })
     });
 });
+
+$('#loginX').click(function() {
+    $('#login').data('bootstrapValidator').resetForm(true);
+});
+
+
+
+

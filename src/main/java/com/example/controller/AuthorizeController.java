@@ -4,6 +4,7 @@ import com.example.Provider.GithubProvider;
 import com.example.dto.AccessToken;
 import com.example.dto.GithubUser;
 import com.example.model.User;
+import com.example.model.UserInfo;
 import com.example.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,15 +54,16 @@ public class AuthorizeController {
             GithubUser githubUser = githubProvider.getUser(BackaccessToken);
             if (githubUser!=null&&githubUser.getId()!=null) {
                 User user = new User();
+                UserInfo userInfo = new UserInfo();
                 String token = UUID.randomUUID().toString();
                 user.setToken(token);
-                user.setName(githubUser.getName());
-                user.setAvatarUrl(githubUser.getAvatar_url());
                 user.setAccountId(String.valueOf(githubUser.getId()));
-                user.setBio(githubUser.getBio());
-                userService.createOrUpdate(user);
+                userInfo.setAccountId(String.valueOf(githubUser.getId()));
+                userInfo.setName(githubUser.getName());
+                userInfo.setAvatarUrl(githubUser.getAvatar_url());
+                userInfo.setBio(githubUser.getBio());
+                userService.createOrUpdate(user,userInfo);
                 response.addCookie(new Cookie("token",token));
-//                request.getSession().setAttribute("user", githubUser);
                 return "redirect:/";
             }  else{
                 log.error("callback  get github for error,{}",githubUser);
@@ -72,8 +74,8 @@ public class AuthorizeController {
     @GetMapping("/logout")
     public  String logout(HttpServletRequest request,HttpServletResponse response)
     {
-
-     request.getSession().removeAttribute("user");
+        request.getSession().removeAttribute("user");
+        request.getSession().removeAttribute("userInfo");
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
             cookie.setMaxAge(0);

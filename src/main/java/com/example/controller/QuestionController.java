@@ -32,7 +32,14 @@ public class QuestionController {
 
         List<QuestionDto> relatedQuestions = questionservice.selectRelated(questionDto);
         List<CommentDTO> comments = commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
-        //累加阅读数
+//        //当前用户通过的身份
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        //用户身份。
+//        Object principal = authentication.getPrincipal();
+//        if (principal==null){
+//            System.out.println("空空就！！！！！！！！");
+//        }
+        //累加阅读数1
         questionservice.incview(id);
         model.addAttribute("question",questionDto);
         model.addAttribute("comments", comments);

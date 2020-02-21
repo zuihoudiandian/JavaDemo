@@ -1,8 +1,10 @@
 package com.example.interceptor;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.mapper.UserInfoMapper;
 import com.example.mapper.UserMapper;
 import com.example.model.User;
-import com.example.model.UserExample;
+import com.example.model.UserInfo;
 import com.example.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -13,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * Created by codedrinker on 2019/5/16.
@@ -23,9 +24,8 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Autowired
     private UserMapper userMapper;
-
-//    @Value("${github.redirect.uri}")
-//    private String redirectUri;
+    @Autowired
+    private UserInfoMapper userInfoMapper;
     @Autowired
     private NotificationService notificationService;
     @Override
@@ -37,13 +37,16 @@ public class SessionInterceptor implements HandlerInterceptor {
                 if (cookie.getName().equals("token"))
                 {
                     String token = cookie.getValue();
-                    UserExample UserExample = new UserExample();
-                    UserExample.createCriteria().andTokenEqualTo(token);
-                    List<User> users = userMapper.selectByExample(UserExample);
-                    //User user = userMapper.findByToken(token);
-                    if (users.size()>0){
-                        request.getSession().setAttribute("user",users.get(0));
-                        Long unreadCount = notificationService.unreadCount(users.get(0).getId());
+                    QueryWrapper<User> wrapper = new QueryWrapper<>();
+                    wrapper.eq("token",token);
+                    User user = userMapper.selectOne(wrapper);
+                    QueryWrapper<UserInfo> userInfoQueryWrapper = new QueryWrapper<>();
+                    userInfoQueryWrapper.eq("ACCOUNT_ID",user.getAccountId());
+                    UserInfo userInfo = userInfoMapper.selectOne(userInfoQueryWrapper);
+                    if (userInfo != null){
+                        request.getSession().setAttribute("user",user);
+                        request.getSession().setAttribute("userInfo",userInfo);
+                        Long unreadCount = notificationService.unreadCount(user.getId());
                         request.getSession().setAttribute("unreadCount",unreadCount);
 
                     }

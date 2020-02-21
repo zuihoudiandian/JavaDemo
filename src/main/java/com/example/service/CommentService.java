@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.dto.CommentDTO;
 import com.example.enums.CommentTypeEnum;
 import com.example.enums.NotificationStatusEnum;
@@ -13,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -33,6 +31,9 @@ public class CommentService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
     @Autowired
     private CommentExtMapper commentExtMapper;
@@ -55,15 +56,12 @@ public class CommentService {
             if (dbComment == null) {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
-
             // 回复问题
             Question question = questionMapper.getquetionByid(dbComment.getParentId().intValue());
             if (question == null) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
-
             commentMapper.insert(comment);
-
             // 增加评论数
             Comment parentComment = new Comment();
             parentComment.setId(comment.getParentId());
@@ -71,7 +69,7 @@ public class CommentService {
             commentExtMapper.incCommentCount(parentComment);
 
             // 创建通知
-           createNotify(comment, dbComment.getCommentator().longValue(), commentator.getName(), question.getTitle(), NotificationTypeEnum.REPLY_COMMENT, question.getId().longValue());
+           createNotify(comment, dbComment.getCommentator().longValue(), commentator.getAccountId(), question.getTitle(), NotificationTypeEnum.REPLY_COMMENT, question.getId().longValue());
         } else {
             // 回复问题
             Question question = questionMapper.getquetionByid(comment.getParentId().intValue());
@@ -84,7 +82,7 @@ public class CommentService {
             questionMapper.incCommentCount(question);
 
             // 创建通知
-          createNotify(comment, question.getCreator().longValue(), commentator.getName(), question.getTitle(), NotificationTypeEnum.REPLY_QUESTION, question.getId().longValue());
+          createNotify(comment, question.getCreator().longValue(), commentator.getAccountId(), question.getTitle(), NotificationTypeEnum.REPLY_QUESTION, question.getId().longValue());
         }
     }
 
@@ -112,7 +110,6 @@ public class CommentService {
                 .andTypeEqualTo(type.getType());
         commentExample.setOrderByClause("gmt_create desc");
         List<Comment> comments = commentMapper.selectByExample(commentExample);
-
         if (comments.size() == 0) {
             return new ArrayList<>();
         }
@@ -123,18 +120,20 @@ public class CommentService {
 
 
          //获取评论人并转换为 Map
-        UserExample userExample = new UserExample();
-        userExample.createCriteria()
-                .andIdIn(userIds);
-        List<User> users = userMapper.selectByExample(userExample);
-       Map<Long, User> userMap = users.stream().collect(Collectors.toMap(user -> user.getId(), user -> user));
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.in("ID",userIds);
+        List<User> users = userMapper.selectList(wrapper);
+        Map<Long, User> userMap = users.stream().collect(Collectors.toMap(user -> user.getId(), user -> user));
 
-
-//        // 转换 comment 为 commentDTO
         List<CommentDTO> commentDTOS = comments.stream().map(comment -> {
+            User user = userMap.get(comment.getCommentator());
+            QueryWrapper<UserInfo> userInfoQueryWrapper = new QueryWrapper<>();
+            userInfoQueryWrapper.eq("ACCOUNT_ID",user.getAccountId());
+            UserInfo userInfo = userInfoMapper.selectOne(userInfoQueryWrapper);
             CommentDTO commentDTO = new CommentDTO();
             BeanUtils.copyProperties(comment, commentDTO);
-            commentDTO.setUser(userMap.get(comment.getCommentator()));
+            commentDTO.setUser(user);
+            commentDTO.setUserInfo(userInfo);
             return commentDTO;
         }).collect(Collectors.toList());
 

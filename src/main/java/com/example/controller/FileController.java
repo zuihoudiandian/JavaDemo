@@ -26,10 +26,9 @@ public class FileController {
     @RequestMapping("/file/upload")
     @ResponseBody
     public FileDTO upload(HttpServletRequest request) {
-        String fileName = "";
+        String fileName ;
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile multipartFile = multipartRequest.getFile("editormd-image-file");
-
         if (!multipartFile.isEmpty()) {
             try {
                 //上传文件的源文件名
@@ -63,7 +62,6 @@ public class FileController {
                 return fileDTO;
 
             }
-
         }
         return null;
     }

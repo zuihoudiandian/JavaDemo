@@ -1,6 +1,7 @@
 package com.example.dto;
 
 import com.example.model.User;
+import com.example.model.UserInfo;
 import lombok.Data;
 
 /**
@@ -18,4 +19,5 @@ public class CommentDTO {
     private Integer commentCount;
     private String content;
     private User user;
+    private UserInfo userInfo;
 }

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <head th:insert="~{import :: head}"></head>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+</head>
+<body>
+<div th:insert="~{head :: nav}"></div>
+<div class="container-fluid main">
+    <table id="table" class="table text-nowrap"></table>
+</div>
+<div th:insert="~{footer :: foot}"></div>
+<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+<script src="/js/tabel/admin.js" type="application/javascript"></script>
+</body>
+</html>
