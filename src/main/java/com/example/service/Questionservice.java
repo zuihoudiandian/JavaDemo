@@ -16,6 +16,7 @@ import com.example.model.UserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class Questionservice extends ServiceImpl<QuestionMapper, Question> {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
-
+    @Cacheable(value = "allQuestions",key = "#p1")
     public PaginationDTO Allselect(String search,Integer page, Integer size) {
         if (StringUtils.isNotBlank(search)) {
             String[] tags = StringUtils.split(search, " ");
@@ -49,7 +50,6 @@ public class Questionservice extends ServiceImpl<QuestionMapper, Question> {
         }
         QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
         questionQueryDTO.setSearch(search);
-
         PaginationDTO PaginationDTO = new PaginationDTO();
         Integer totalCount=questionMapper.countbysearch(search);
         if (totalCount==0){
@@ -92,12 +92,11 @@ public class Questionservice extends ServiceImpl<QuestionMapper, Question> {
          return PaginationDTO;
         }
 
+
     public PaginationDTO list(User user, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalPage;
-
         Integer totalCount =  questionMapper.count();
-
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
         } else {
@@ -110,25 +109,11 @@ public class Questionservice extends ServiceImpl<QuestionMapper, Question> {
         if (page > totalPage) {
             page = totalPage;
         }
-
         paginationDTO.setPagination(totalPage, page);
-
         //size*(page-1)
         Integer offset = size * (page - 1);
-        List<Question> allselect  = questionMapper.myquestion(user.getId(), offset,size);
-        List<QuestionDto> questionDtoslist = new ArrayList<>();
-        for (Question question : allselect) {
-            QueryWrapper<User> wrapper = new QueryWrapper<>();
-            wrapper.eq("ID",question.getCreator());
-            User users  =   userMapper.selectOne(wrapper);
-            QuestionDto questionDto = new QuestionDto();
-            //将question中的属性拷贝到questionDta中
-            BeanUtils.copyProperties(question,questionDto);
-            questionDto.setUser(users);
-            questionDtoslist.add(questionDto);
-        }
-        paginationDTO.setData(questionDtoslist);
-
+        List<Question> myquestion  = questionMapper.myquestion(user.getId(), offset,size);
+        paginationDTO.setData(myquestion);
         return paginationDTO;
     }
 
@@ -152,13 +137,14 @@ public class Questionservice extends ServiceImpl<QuestionMapper, Question> {
 
     }
 
+    //添加问题点击次数
     public void incview(Integer id) {
         questionMapper.addview(id);
     }
 
+    @Cacheable(value = "RelatedQuestions",key = "#p0.id")
     public List<QuestionDto> selectRelated(QuestionDto questionDto) {
         if (StringUtils.isBlank(questionDto.getTag())) {
-
             return new ArrayList<>();
         }
         String[] tags = StringUtils.split(questionDto.getTag(), ",");
@@ -171,7 +157,6 @@ public class Questionservice extends ServiceImpl<QuestionMapper, Question> {
         Question question = new Question();
         question.setId(questionDto.getId().longValue());
         question.setTag(regexpTag);
-
         List<Question> questions = questionMapper.selectRelated(question);
         List<QuestionDto> questionDTOS = questions.stream().map(q -> {
             QuestionDto questionDTO = new QuestionDto();
@@ -180,6 +165,7 @@ public class Questionservice extends ServiceImpl<QuestionMapper, Question> {
         }).collect(Collectors.toList());
         return questionDTOS;
     }
+
 
     public List<QuestionDto>  selectquestionByView() {
         List<Question> questions = questionMapper.selectquestionByView();
@@ -193,15 +179,13 @@ public class Questionservice extends ServiceImpl<QuestionMapper, Question> {
         return hotquestionDto;
     }
 
-
-
-
     public boolean delquestionByuser(User user) {
         QueryWrapper<Question> questionQueryWrapper = new QueryWrapper<>();
         questionQueryWrapper.eq("CREATOR",user.getId());
         return lambdaUpdate().eq(Question::getCreator, user.getId()).remove();
     }
 
+    //根据用户查询所有问题
     public IPage<Question> getQuestionList(QuestionByuser questionByuser) {
         Page<Question> page = new Page<>(questionByuser.getPageNumber(), questionByuser.getPageSize());
         QueryWrapper<Question> wrapper = new QueryWrapper<>();

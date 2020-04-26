@@ -66,6 +66,7 @@ public class AdminController {
 
     @ResponseBody
     @GetMapping("/getquestionbyluser")
+    //根据用户查询所有问题
     public ResultDTO getQuestionByUser(QuestionByuser questionByuser){
         Map<String, Object> result = new HashMap<>();
         IPage<Question> questionIPage =questionservice.getQuestionList(questionByuser);

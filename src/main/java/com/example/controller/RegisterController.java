@@ -9,6 +9,7 @@ import com.example.service.IVerifyCodeGen;
 import com.example.service.SimpleCharVerifyCodeGenImpl;
 import com.example.service.UserService;
 import com.example.utils.TimeUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -26,6 +27,7 @@ import java.util.UUID;
  * Author by admin, Email xx@xx.com, Date on 2019/8/23.
  * PS: Not easy to write code, please indicate.
  */
+@Slf4j
 @Controller
     public class RegisterController {
     @Autowired
@@ -100,10 +102,9 @@ import java.util.UUID;
         JSONObject jo = new JSONObject();
         try{
             String inputStr =  StringUtils.substringAfterLast(code.toLowerCase(), "=");
-            System.out.println(inputStr);
+            log.info(inputStr);
             String random = (String) session.getAttribute("VerifyCode");
             String paramCode=random.toLowerCase();
-            System.out.println(random+"----12312132");
             if (paramCode.equals(inputStr)){
                 jo.put("valid",true);
                 return jo;

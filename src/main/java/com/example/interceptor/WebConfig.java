@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
+public class  WebConfig implements WebMvcConfigurer {
     @Value("${custom.tmpLocation}")
     private  String tmpLocation;
     @Value("${avatar.file}")
@@ -27,8 +27,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/uploadImg/**").addResourceLocations("file:"+tmpLocation);
-        registry.addResourceHandler("/avatar/**").addResourceLocations("file:"+avatarLocation);
+        registry.addResourceHandler("/uploadimg/**")
+                .addResourceLocations("file:"+tmpLocation);
+        registry.addResourceHandler("/avatar/**")
+                .addResourceLocations("file:"+avatarLocation);
     }
 
 

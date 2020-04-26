@@ -1,0 +1,284 @@
+body {
+    background-color: #efefef;
+    margin: 0;
+    padding: 0;
+}
+
+.main {
+    background-color: white;
+    width: 1000px;
+}
+
+.side {
+    margin: 5px 0;
+}
+
+.btn-publish {
+    float: right;
+    margin-bottom: 15px;
+}
+
+.media-object {
+    width: 38px;
+    height: 38px;
+}
+
+/*
+.media-body {
+    padding-top: 10px;
+}
+*/
+
+.text-desc {
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+}
+
+.profile .section {
+    margin-top: 15px;
+}
+
+.question-title {
+    margin-top: 25px;
+}
+
+.question-tag {
+    margin-right: 5px;
+}
+
+.question-related {
+    line-height: 20px;
+    font-size: 12px;
+    margin-left: 0;
+    list-style: none;
+    padding-left: 0;
+}
+
+.question-wechat {
+    width: 95%;
+}
+
+.publish-tag-tab {
+    display: none;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.publish-tag-tab .label-info {
+    white-space: normal;
+    margin: 5px 5px;
+    display: inline-block;
+}
+
+.community-menu {
+    color: #999;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.jumbotron {
+    margin: 50px;
+}
+
+.comment {
+    margin: 10px 0;
+}
+
+.btn-comment {
+    float: right;
+    margin-bottom: 10px;
+}
+
+.comments {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+    margin: 0px 15px;
+
+}
+
+.sub-comments {
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid #eee;
+    padding-top: 15px;
+    margin-bottom: 15px;
+}
+
+.sub-comments .btn {
+    margin: 10px 0;
+}
+
+.comment-sp {
+    margin-top: 0;
+}
+
+.menu {
+    color: #999;
+    margin-top: 5px;
+}
+
+.menu .icon {
+    margin-right: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.menu .comment-icon {
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.menu .comment-icon :hover {
+    color: #499ef3;
+}
+
+.menu .active {
+    color: #499ef3;
+}
+
+.menu .icon:hover {
+    color: #499ef3;
+}
+
+
+.footer {
+    width: 100%;
+    margin: 10px;
+    line-height: 88px;
+    text-align: center;
+    height: 100px;
+    bottom: 0;
+    left:0;
+    background-color: #efefef;
+}
+
+.user_info{
+    float: left;
+    text-align: center;
+    width: 110px;
+    height: 110px;
+}
+
+.user_info .modify {
+    font-size: 14px;
+    color: #3399ea;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.right_c {
+    float: left;
+    width: 820px;
+}
+.user_title{
+    font-size: 20px;
+    color: #3d3d3d;
+    height: 90px;
+    line-height: 90px;
+    border-bottom: 1px solid #e0e0e0;
+}
+.id_card{
+    height: 130px;
+    line-height: 20px;
+}
+.id_card .user_home {
+    float: right;
+    font-size: 14px;
+    color: #3399ea;
+    padding-right: 9.3px;
+    margin-top: 3px;
+}
+
+.mod {
+    float: right;
+    font-size: 14px;
+    color: #3399ea;
+    cursor: pointer;
+    padding-right: 9.3px;
+}
+.line {
+    height: 1px;
+    background: #e0e0e0;
+    margin: 10px;
+}
+.right_c .nick {
+    height: 32px;
+    line-height: 32px;
+    font-size: 14px;
+}
+.main_info{
+    background-color: white;
+    width: 1000px;
+    height: 450px;
+}
+.sex_select{
+    font-weight: 400;
+    width: 15%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    }
+.msg {
+    font-size: 14px;
+    color: red;
+    margin-left: 10px;
+}
+
+.login_img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 10px;
+}
+
+/****修改密码的模态框*****/
+#myModal1 .modal-header{
+    padding:10px;
+}
+#myModal1 .modal-header .modal-title{
+    font-size: 16px;
+    text-align: left;
+}
+#myModal1 .modal-body{
+    overflow:hidden;
+}
+#myModal1 .modal-body label{
+    margin:0;
+    line-height:34px;
+}
+#myModal1 .modal-body .form-group{
+    overflow:hidden;
+}
+#myModal1 .modal-body .form-control{
+    margin-left:-30px;
+}
+
+/*登陆*/
+#myModal2 .modal-header{
+    padding:10px;
+}
+#myModal2 .modal-header .modal-title{
+    font-size: 16px;
+    text-align: left;
+}
+#myModal1 .modal-body{
+    overflow:hidden;
+}
+#myModal2 .modal-body label{
+    margin:0;
+    line-height:34px;
+}
+#myModal2 .modal-body .form-group{
+    overflow:hidden;
+}
+#myModal2 .modal-body .form-control{
+    margin-left:-30px;
+}

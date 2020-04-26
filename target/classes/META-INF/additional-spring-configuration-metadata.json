@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "logging.file.path",
+      "type": "java.lang.String",
+      "description": "Description for logging.file.path."
+    },
+    {
+      "name": "logging.file.name",
+      "type": "java.lang.String",
+      "description": "Description for logging.file.name."
+    }
+  ] }

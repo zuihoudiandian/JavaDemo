@@ -24,8 +24,6 @@ public class MyAuthenctiationFailureHandler extends SimpleUrlAuthenticationFailu
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         logger.info("登陆失败");
         response.setContentType("application/json;charset=UTF-8");
-
-
         response.getWriter().write(objectMapper.writeValueAsString( ResultDTO.errorOf(404,"账号或者密码错误!!")));
     }
 

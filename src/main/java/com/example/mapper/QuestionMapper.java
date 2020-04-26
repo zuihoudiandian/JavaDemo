@@ -6,10 +6,9 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
-@Mapper
 public interface QuestionMapper extends BaseMapper<Question> {
 
-    @Insert("insert into  QUESTION (TITLE,DESCRIPTION,GMT_CREATE,CREATOR,TAG)  values( #{title},#{description},#{gmtCreate},#{creator},#{tag})")
+    @Insert("insert into  question (TITLE,DESCRIPTION,GMT_CREATE,CREATOR,TAG)  values( #{title},#{description},#{gmtCreate},#{creator},#{tag})")
      void creat(Question questiong);
 
     @Select("select * from question  order by   GMT_CREATE  desc  limit #{ nowrow}  ,#{size}  ")
@@ -26,11 +25,11 @@ public interface QuestionMapper extends BaseMapper<Question> {
     Question getquetionByid(@Param(value = "id") Integer id);
 
     @Update("update question set title =#{title},DESCRIPTION =#{description} ,TAG=#{tag}   where id = #{id} ")
-     int updateQuestion(Question question);
+    Question updateQuestion(Question question);
     @Update("update question  set VIEW_COUNT=VIEW_COUNT+1  where id = #{id}   ")
     void addview(Integer id);
 
-    @Insert(" update QUESTION\n" +
+    @Insert(" update question\n" +
             "    set\n" +
             "    COMMENT_COUNT = COMMENT_COUNT + #{commentCount,jdbcType=INTEGER}\n" +
             "    where id = #{id}")
@@ -40,7 +39,7 @@ public interface QuestionMapper extends BaseMapper<Question> {
 
 
     @Select("<script>"+
-            "select count(*) from QUESTION\n" +
+            "select count(*) from question\n" +
             "        <where>\n" +
             "            <if test=\"search != null and search != ''\">\n" +
             "                and title regexp #{search}\n" +
@@ -50,7 +49,7 @@ public interface QuestionMapper extends BaseMapper<Question> {
     Integer countbysearch(@Param(value = "search") String search);
 
     @Select("<script> " +
-            "  select * from QUESTION\n" +
+            "  select * from question\n" +
             "        <where>\n" +
             "            <if test=\"search != null and search != ''\">\n" +
             "                and title regexp #{search}\n" +

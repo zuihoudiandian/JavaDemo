@@ -2,6 +2,7 @@ package com.example.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,8 @@ import java.util.List;
  * Created by codedrinker on 2019/5/14.
  */
 @Data
-public class PaginationDTO<T> {
+public class PaginationDTO<T>  implements Serializable {
+    private static final long serialVersionUID = 1L;
     private List<T> data;
     private boolean showPrevious;
     private boolean showFirstPage;

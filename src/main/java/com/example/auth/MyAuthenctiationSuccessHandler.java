@@ -51,8 +51,6 @@ public class MyAuthenctiationSuccessHandler extends SavedRequestAwareAuthenticat
             request.getSession().setAttribute("unreadCount",unreadCount);
 
         }
-
-
         response.getWriter().write(objectMapper.writeValueAsString(ResultDTO.okOf("登陆成功!")));
     }
 }

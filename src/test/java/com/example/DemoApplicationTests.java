@@ -15,9 +15,9 @@ import java.util.concurrent.TimeUnit;
 @SpringBootTest(classes = DemoApplication.class)
 public class DemoApplicationTests {
         @Autowired
-        private StringRedisTemplate stringRedisTemplate;
+     StringRedisTemplate stringRedisTemplate;  //操作字符串
         //@Autowired
-      //  private RedisTemplate redisTemplate;
+      //  private RedisTemplate redisTemplate;  //操作对象的 KV 结构
         //添加
         @Test
         public void saveRedis(){

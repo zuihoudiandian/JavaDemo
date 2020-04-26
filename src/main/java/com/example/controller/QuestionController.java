@@ -31,6 +31,7 @@ public class QuestionController {
         QuestionDto questionDto =questionservice.getInfoByid(id);
 
         List<QuestionDto> relatedQuestions = questionservice.selectRelated(questionDto);
+
         List<CommentDTO> comments = commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
 //        //当前用户通过的身份
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

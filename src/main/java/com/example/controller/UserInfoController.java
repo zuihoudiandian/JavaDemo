@@ -62,7 +62,7 @@ public class UserInfoController {
             try {
                 String oldFileName = file.getOriginalFilename();
                         //上传文件，随机名称，";"分号隔开
-                fileName = StringUtils.substringBeforeLast(oldFileName, ".") + "-" + UUID.randomUUID() + "." + StringUtils.substringAfterLast(oldFileName, ".");
+                fileName =  UUID.randomUUID() + "." + StringUtils.substringAfterLast(oldFileName, ".");
                 String destPath = avatarLocation;
                 //判断该路径是否存在,如果不存在则创建该路径
                 if (!haveCreatePath) {

@@ -22,12 +22,10 @@ public class UserInfo  implements Serializable {
     @TableId(value = "id" ,type= IdType.AUTO)
     private Long id;
     private String accountId;
-
     /**
     * bio
     */
     private String bio;
-
     /**
     * avatar_url
     */

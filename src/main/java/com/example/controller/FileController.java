@@ -35,7 +35,7 @@ public class FileController {
                 String oldFileName = multipartFile.getOriginalFilename();
 
                 //处理后的文件名
-                fileName = StringUtils.substringBeforeLast(oldFileName, ".") + "-" + UUID.randomUUID() + "." + StringUtils.substringAfterLast(oldFileName, ".");
+                fileName = UUID.randomUUID() + "." + StringUtils.substringAfterLast(oldFileName, ".");
 
                 // 存储在当前web服务路径下的upload路径
                 String destPath = tmpLocation;
@@ -46,7 +46,7 @@ public class FileController {
                     destFile.mkdirs();
                     haveCreatePath = true;
                 }
-                String fileUrl="/uploadImg/"+fileName;
+                String fileUrl="/uploadimg/"+fileName;
                 System.out.println(fileUrl+"地址");
                multipartFile.transferTo(new File(destPath+fileName));
                 FileDTO fileDTO = new FileDTO();

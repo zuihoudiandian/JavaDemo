@@ -13,9 +13,8 @@ import java.util.List;
  * PS: Not easy to write code, please indicate.
  */
 @Data
-public class QuestionDto extends PaginationModel {
+public class QuestionDto  extends PaginationModel  {
     private Long id;
-
     private String title;
 
     private String description;

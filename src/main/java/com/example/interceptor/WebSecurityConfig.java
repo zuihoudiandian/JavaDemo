@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -38,9 +39,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       protected void configure(HttpSecurity httpSecurity) throws Exception {
        httpSecurity
                .authorizeRequests()
-               .antMatchers("/statis/**").permitAll()
-               .antMatchers("/admin/**").hasAuthority("admin")
-               .anyRequest().permitAll().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+               .antMatchers("/admin/**").hasAnyAuthority("admin")
+               .anyRequest().permitAll()
+               .and()
+               .headers().frameOptions().disable()
+               .and()
+               .sessionManagement()
                .and().csrf().disable();
        httpSecurity.formLogin()
                .loginPage("/")
@@ -54,18 +58,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                .logoutSuccessUrl("/")
                .invalidateHttpSession(true)
                .and().sessionManagement()
-               .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-               .invalidSessionUrl("/")
+               .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) //创建session
+               .invalidSessionUrl("/") //session失效跳转
                .sessionFixation().migrateSession()
                .maximumSessions(1)
                .maxSessionsPreventsLogin(false)
                .expiredSessionStrategy(new MyExpiredSessionStrategy());
       }
+    //忽略静态资源
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+            web.ignoring().antMatchers("/statis/**");
+        super.configure(web);
+    }
 
-     @Autowired
+    @Autowired
       public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
        auth.userDetailsService(myUserDetailService).passwordEncoder(passwordEncoder());
       }
+
+   
+
 
 
 }
